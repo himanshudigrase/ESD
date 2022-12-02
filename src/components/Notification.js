@@ -1,5 +1,5 @@
 import React from 'react'
-
+import 'bootstrap/dist/css/bootstrap.css';
 /*
   This component renders the notification text in a <div> tag along with the relevant styles as indicated
   by the notification type

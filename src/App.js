@@ -7,6 +7,7 @@ import Notification from './components/Notification'
 import LoginForm from './components/LoginForm'
 import NavBar from './components/NavBar'
 import Courses from './components/Courses'
+import ModifyForm from './components/ModifyCourse'
 
 const App = () => {
   // user state will store the logged in user object, if no login has been done yet then it will be null
@@ -14,6 +15,8 @@ const App = () => {
 
   // Will store the courses of the logged in user
   const [ courses, setCourses ] = useState([])
+
+  const [modifyForm, setModifyForm] = useState([])
 
   // These states are used to control the notifications that show up at the top of the screen for events like 
   // login, signup, watchlist creation, etc.
@@ -36,12 +39,12 @@ const App = () => {
   // Function that handles login of users
   const handleLogin = async (credentials) => {
     try {
-      const userObject = await loginService.login(credentials);
+      const courseObject = await loginService.login(credentials);
       console.log("here")
-      setUser(userObject)
-      window.localStorage.setItem('loggedInUser', JSON.stringify(userObject))
+      setUser(courseObject)
+      window.localStorage.setItem('loggedInUser', JSON.stringify(courseObject))
       
-      notificationHandler(`Logged in successfully as ${userObject.firstName}`, 'success')
+      notificationHandler(`Logged in successfully as ${courseObject.firstName}`, 'success')
       setCourses([])
     }
     catch (exception) {
@@ -49,43 +52,61 @@ const App = () => {
     }
   }
 
-  // Function that pays a bill using the billObject that is passed to the function
-  const modifyCourse = async (billObject) => {
+  const handleModify = async (credentials) => {
     try {
-      // Call payBill() at the backend 
-      await courseService.modifyCourse(billObject)
-
-      // On successful completion of the above method, iterate through all the courses and only retain those courses
-      // which don't have ID equal to the billObject's ID, i.e. the ID of the bill that's just been paid/deleted
-      setCourses(courses.filter(bill => bill.billId !== billObject.billId))
-
-      notificationHandler(`Successfully paid the "${billObject.description}" bill`, 'success')
+      const courseObject = await courseService.modifyCourse(credentials);
+      console.log("Modifying course here")
+      //setUser(courseObject)
+      //window.localStorage.setItem('loggedInUser', JSON.stringify(courseObject))
+      
+      notificationHandler(`Course ${courseObject.name} modified successfully`, 'success')
+     // setCourses([])
     }
     catch (exception) {
-      notificationHandler(`Failed to pay the "${billObject.description}" bill successfully`, 'error')
+      notificationHandler(`Unable to modify course`, 'error')
     }
   }
-  const deleteCourse = async (billObject) => {
+
+
+  // Function that modifies a course using the courseObject that is passed to the function
+  const modifyCourse = async (courseObject) => {
     try {
-      // Call payBill() at the backend 
-      await courseService.deleteCourse(billObject)
-
-      // On successful completion of the above method, iterate through all the courses and only retain those courses
-      // which don't have ID equal to the billObject's ID, i.e. the ID of the bill that's just been paid/deleted
-      setCourses(courses.filter(bill => bill.billId !== billObject.billId))
-
-      notificationHandler(`Successfully deleted the "${billObject.description}" bill`, 'success')
+      setModifyForm(null)
+      console.log("mod "+modifyForm)
+    
+      notificationHandler(`Successfully modified the "${courseObject.name}" course`, 'success')
     }
     catch (exception) {
-      notificationHandler(`Failed to pay the "${billObject.description}" bill successfully`, 'error')
+      notificationHandler(`Failed to pay the "${courseObject.name}" course successfully`, 'error')
+    }
+  }
+  const deleteCourse = async (courseObject) => {
+    try {
+      // Call payBill() at the backend 
+     // console.log(courseObject)
+      await courseService.deleteCourse(courseObject)
+     
+      // On successful completion of the above method, iterate through all the courses and only retain those courses
+      // which don't have ID equal to the courseObject's ID, i.e. the ID of the course that's just been deleted
+      setCourses(courses.filter(course => course.courseID !== courseObject.courseID))
+
+      notificationHandler(`Successfully deleted the "${courseObject.name}" course`, 'success')
+    }
+    catch (exception) {
+      notificationHandler(`Failed to delete the "${courseObject.description}" course successfully`, 'error')
+    }
+  }
+
+  const showPrereq = async(courseObject) =>{
+    try{
+      const response = await  courseService.getPreReqCourse(courseObject)
+      console.log(response)
+    }catch{
+      notificationHandler(`No prerequisites for "${courseObject.name}" course`);
     }
   }
 
   
-  // Effect Hook that fetches a user's courses
-  // If "user" state changes, then the new courses must be fetched.
-  // This is why "user" is part of the dependency array of this hook
-  // MIGHT HAVE TO CHANGE THIS LATER TO PROMISE CHAINING IF IT FAILS
   useEffect(() => {
       async function fetchData() {
         if (user) {
@@ -96,20 +117,19 @@ const App = () => {
       fetchData()
   }, [user])
 
-
-  // Effect Hook that parses the local storage for 'loggedInUser' and sets the "user" state if a valid match is found
-  // This enables user to login automatically without having to type in the credentials. Caching the login if you will.
   useEffect(() => {
     const loggedInUser = window.localStorage.getItem('loggedInUser')
     if (loggedInUser)
       setUser(JSON.parse(loggedInUser))
   }, [])
+
+
   return (
     <div>
       {/* Header of the page */}
       <div className='text-center page-header p-2 regular-text-shadow regular-shadow'>
           <div className='display-4 font-weight-bold'>
-            Academia - Payments
+            Academia - ERP
           </div>
       </div>
       
@@ -135,8 +155,15 @@ const App = () => {
           courses={courses}
           modifyCourse={modifyCourse}
           deleteCourse = {deleteCourse}
+          showPrereq = {showPrereq}
         />
       }
+      {
+        user !== null && modifyForm === null && 
+        <ModifyForm sendModify = {handleModify}></ModifyForm>
+      }
+
+
     </div>
   )
 }

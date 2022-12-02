@@ -1,4 +1,5 @@
 import React from 'react'
+import 'bootstrap/dist/css/bootstrap.css';
 
 /*
   This component is used for rendering the Nav Bar which contains the following,

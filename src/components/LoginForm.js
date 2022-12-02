@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-
+import 'bootstrap/dist/css/bootstrap.css';
 /*
   This component renders the Login Form with all its functionalities
   startLogin is the method that uses the axios service to submit login credentials to the backend
@@ -26,6 +26,7 @@ const LoginForm = ({ startLogin }) => {
     setEmail('')
     setPassword('')
     setDepartmentId('')
+    
   }
 
   // Typically keep id attributes on your HTML elements so that they can be styled using CSS
@@ -55,14 +56,14 @@ const LoginForm = ({ startLogin }) => {
         id='password'
         //required
       />
-      <input
+      {/* <input
         type = 'number'
         placeholder='Department ID'
         value={departmentId}
         onChange={event => setDepartmentId(event.target.value)}
         id='departmentId'
         //required
-      />
+      /> */}
 
       {/* Submit button for the form */}
       <button type='submit' id='login-submit'>LOGIN</button>
