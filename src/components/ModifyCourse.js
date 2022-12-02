@@ -16,8 +16,8 @@ const ModifyForm = ({ sendModify }) => {
   const [ term, setTerm ] = useState('')
   const [ year, setYear ] = useState('')
   const [ capacity, setCapacity ] = useState('')
-  const [preRequisiteList, setPreRequisiteList] = useState('')
-
+ // const [preRequisiteList, setPreRequisiteList] = useState('')
+  
   // onSubmit event handler of this Form
   const handleModify = (event) => {
     // Preventing default submission of the Form to the action attribute URL
@@ -39,7 +39,7 @@ const ModifyForm = ({ sendModify }) => {
     setTerm('')
     setYear('')
     setCapacity('')
-    setPreRequisiteList('')
+   // setPreRequisiteList('')
   }
 
   // Typically keep id attributes on your HTML elements so that they can be styled using CSS
@@ -125,17 +125,17 @@ const ModifyForm = ({ sendModify }) => {
           id='capacity'
           //required
         />
-        <Input multiple
+        {/* <Input multiple
           type='number'
           name='preRequisiteList[]'
           placeholder='prerequisite'
           value={preRequisiteList}
           onChange = {event => setPreRequisiteList(event.target.value)}
           id= 'prerequisite'     
-        />
+        /> */}
 
         {/* Submit button for the Form */}
-        <button type='submit' id='login-submit'>LOGIN</button>
+        <button type='submit' id='login-submit'>Modify Course</button>
       </Form>
     </div>
   )
