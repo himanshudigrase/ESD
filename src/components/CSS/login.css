@@ -1,0 +1,18 @@
+.form-div {
+    align-items: center;
+    width: 40%;
+    margin: auto;
+    margin-top:10%;
+}
+
+.form-div Input {
+    padding: 1.1em;
+    margin: 1em;
+    /* background-color: red; */
+    font-size: 1.4em;
+}
+
+Button {
+    align-items: center;
+    margin-left: 43%;
+}

@@ -1,5 +1,8 @@
 import React from 'react'
 import 'bootstrap/dist/css/bootstrap.css';
+import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
+import "./CSS/navbar.css"
+
 
 /*
   This component is used for rendering the Nav Bar which contains the following,
@@ -25,19 +28,19 @@ const NavBar = ({ user, setUser }) => {
     <div className='regular-shadow mb-1'>
       <nav className='navbar navbar-expand-lg navbar-dark' id='menu'>
         {/* UPDATE user.name PROPERTY IF IT DOESN'T EXIST */}
-        <button className='navbar-brand btn btn-link border border-light p-2'>Welcome, {user.name}</button>
+        <Button className='welcomeuserBtn'>Welcome, {user.name}</Button>
         
         {/* Bootstrap element for hamburger menu on collapse */}
-        <button
+        <Button
           className='navbar-toggler' type='button'
           data-toggle='collapse' data-target='#navbarSupportedContent'
           aria-controls='navbarSupportedContent' aria-expanded='false' aria-label='Toggle navigation'
         >
           <span className='navbar-toggler-icon'></span>
-        </button>
+        </Button>
         
         {/* This menu will be collapsed under Hamburger Menu if screen size becomes small enough */}
-        <div className='collapse navbar-collapse' id='navbarSupportedContent'>
+        <div className='collapse navbar-collapse homeBtn'  id='navbarSupportedContent'>
           <ul className="navbar-nav mr-auto">
             <li className="nav-item active">
               {/* Here you can put a Link of React-Router, not of use right now but helpful for the future */}
@@ -46,7 +49,7 @@ const NavBar = ({ user, setUser }) => {
           </ul>
           
           {/* Logout button */}
-          <div className='inline my-2 my-lg-0'><button className='btn btn-primary' onClick={logout}>Logout</button></div>
+          <div className='inline my-2 my-lg-0 logoutbtn'><Button className='btn btn-primary' onClick={logout}>Logout</Button></div>
         </div>
       </nav>
     </div>
